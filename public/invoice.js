@@ -1,18 +1,24 @@
-// fetching URL from the server
 document.addEventListener('DOMContentLoaded', function() {
+    // Parse the purchaseData from the URL
     const urlParams = new URLSearchParams(window.location.search);
-    const invoiceDataEncoded = urlParams.get('invoiceData');
-    
-    if (invoiceDataEncoded) {
-        // Decode the URL-encoded string and parse it as JSON
-        const invoiceData = JSON.parse(decodeURIComponent(invoiceDataEncoded));
-        // Call the function to populate the invoice with the data
+    const purchaseDataEncoded = urlParams.get('purchaseData');
+
+    // Check if purchaseData is present
+    if (purchaseDataEncoded) {
+        // Decode and parse the purchase data
+        const invoiceData = JSON.parse(decodeURIComponent(purchaseDataEncoded));
+
+        // Debug: Log the invoice data
+        console.log('Invoice Data:', invoiceData);
+
+        // Populate the invoice on the page
         populateInvoice(invoiceData);
     } else {
+        // If purchaseData is not present, log an error and possibly display a message to the user
         console.error('No invoice data available.');
-        // show an error message, if error in fetching data
     }
 });
+
 
 // Function that populates the invoice from the decoded URL
 function populateInvoice(invoiceItems) {

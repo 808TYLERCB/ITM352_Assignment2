@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Spam Mart LLC</title>
+
+    <!-- Bootstrap CSS and custom stylesheet -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<style> body {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+</style>
+
+<body class="auth-page">
+    <!-- Login Form -->
+    <main>
+        <div id="login-success-message"></div>
+        <section class="login-container">
+            <h1>SpamMart Login</h1>
+            <form id="login-form" action="/login" method="post" novalidate>
+                <input type="hidden" name="purchaseData" id="purchaseData" value="">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div id="error-message"></div> <!-- Error message under the button -->
+            <p>Don't have an account? <a id="registration-link" href="register.html">Register here</a>.</p>
+        </section>
+    </main>
+
+  
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="./login.js"></script> <!-- Script to handle login form data -->
+
+
+</body>
+</html>

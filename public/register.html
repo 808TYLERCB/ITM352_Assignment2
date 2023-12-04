@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Spam Mart LLC</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<style> body {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+</style>
+
+
+<body class="auth-page">
+    <!-- Registration Form -->
+    <main>
+        <section class="registration-form">
+            <div id="register-success-message"></div>
+            <h1>Register an Account</h1>
+            <form id="registration-form" action="/register" method="post" novalidate>
+                <input type="hidden" name="purchaseData" value="">
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" pattern="[a-zA-Z\s]+" maxlength="30" minlength="2" required>
+                    <div class="error-message" id="error-name"></div>
+                </div>
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="error-email"></div>
+                </div>
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" minlength="10" maxlength="16" required>
+                    <div class="error-message" id="error-password"></div>
+                </div>
+                <!-- Confirm Password Field -->
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirmPassword" minlength="10" maxlength="16" required>
+                    <div class="error-message" id="error-confirm-password"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </section>
+    </main>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="register.js"></script> <!-- Script to handle registration form data -->
+
+    
+</body>
+</html>

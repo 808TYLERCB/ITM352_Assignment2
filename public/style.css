@@ -1,11 +1,23 @@
 .header-container {
     text-align: center;
     padding-top: 10%;
+    flex: 1; /* This will allow the main content to expand and push the footer down */
 }
 .header-container h1 {
 color: hsl(0, 0%, 100%);
 font-size: 4rem;
 font-weight: bold;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0; /* Remove default margin */
 }
 
 .logo {
@@ -16,6 +28,16 @@ font-weight: bold;
 .navbar-light .navbar-nav .nav-link:hover {
 color: #010101; /* Lighter shade or different color */
 text-decoration: underline;
+}
+
+.nav-link-divider {
+    color: white; /* Adjust the color to match your navbar theme */
+    padding: 0 10px; /* Spacing around the divider */
+    pointer-events: none; /* Prevents the divider from being clickable */
+    display: inline-block;
+    vertical-align: middle; /* Aligns the divider with the middle of the text */
+    margin: 0 10px; /* Add some horizontal space around the divider */
+    /* other styles */
 }
 
 /* Custom button styling */
@@ -37,9 +59,9 @@ box-shadow: 0 2px 4px rgba(0,0,0,.1); /* Subtle shadow for depth */
 color: #ffffff;
 text-align: center;
 padding: 20px 0;
-position: absolute;
-bottom: 0;
+position: relative;
 width: 100%;
+margin-top: auto;
 }
 
 .navbar-custom {
@@ -77,4 +99,108 @@ width: 100%;
     height: auto;
     margin-right: 5px;
     cursor: pointer;
+}
+
+/* Scope your styles to only affect elements within the 'auth-page' class */
+.auth-page input[type="text"],
+.auth-page input[type="email"],
+.auth-page input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.auth-page label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.auth-page .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.auth-page .registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.auth-page form {
+    width: 100%;
+    max-width: 320px;
+}
+
+.auth-page .btn-primary {
+    display: block; /* Makes the button a block element */
+    width: 50%; /* Adjust width as needed */
+    padding: 15px 0; /* Larger padding for a bigger button */
+    margin: 20px auto; /* Centers the button with automatic left and right margins */
+    font-size: 1.2em; /* Makes the text larger */
+    border: none; /* Removes the border */
+    border-radius: 5px; /* Slightly rounded corners */
+    background-color: #007bff; /* Bootstrap primary button color, adjust as needed */
+    color: white; /* Text color for the button */
+    cursor: pointer; /* Changes the cursor to indicate the button is clickable */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.auth-page .btn-primary:hover {
+    background-color: #0056b3; /* Darker shade when hovering over the button */
+}
+
+/* Ensure that the form does not stretch too wide on larger screens */
+.auth-page form {
+    max-width: 400px; /* Adjust this value based on your design preference */
+}
+
+#error-message {
+    text-align: center;  /* Center the text */
+    color: red;         /* Error message color, usually red */
+    font-size: 1.2em;   /* Larger font size */
+    margin-top: 20px;   /* Space above the error message */
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.auth-page .error-input {
+    border: 2px solid red !important;
+}
+
+/* Make sure your password field container is positioned relatively */
+.password-field-container {
+    position: relative;
+    /* other styles */
+}
+
+/* Style for the password input field */
+.password-field {
+    /* Ensure there's enough padding on the right to accommodate the icon */
+    padding-right: 30px; /* Adjust based on the size of your icon */
+    /* other styles */
+}
+
+/* Style for the toggle icon */
+.toggle-password {
+    position: absolute;
+    right: 5px; /* Adjust this so the icon sits right next to the input field */
+    top: 55%; /* Center the icon vertically relative to the input field */
+    transform: translateY(-50%); /* This ensures the icon is centered on its middle point */
+    cursor: pointer;
+    /* Specify the size of the icon */
+    height: 24px; /* Or any size that fits well with your design */
+    width: 24px; /* Or any size that fits well with your design */
 }
