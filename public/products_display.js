@@ -184,3 +184,59 @@ function displayErrors() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the current URL query string
+    const currentQueryString = window.location.search;
+
+    // Select all anchor links on the page
+    const allLinks = document.querySelectorAll('a');
+
+    // Append the query string to each link's href attribute
+    allLinks.forEach(link => {
+        // Avoid appending query string to links that already have one
+        if (!link.href.includes('?')) {
+            link.href += currentQueryString;
+        }
+    });
+
+    // Additional code for updating the user welcome message, if needed...
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Retrieve the username and user count from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('userName') && urlParams.has('userCount')) {
+        const userName = urlParams.get('userName');
+        const userCount = urlParams.get('userCount');
+
+        // Update the user welcome message
+        const welcomeMessageElement = document.getElementById('user-welcome-message');
+        if (welcomeMessageElement) {
+            welcomeMessageElement.textContent = `Welcome ${userName}! there are ${userCount} other user(s) currently shopping.`;
+        }
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Retrieve the parameters from the URL query
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const userName = urlParams.get('userName');
+    const userCount = urlParams.get('userCount');
+
+    // Set the values to the hidden input fields
+    document.getElementById('token').value = token || '';
+    document.getElementById('userName').value = userName || '';
+    document.getElementById('userCount').value = userCount || '';
+
+    // Update the welcome message if needed
+    if (userName && userCount) {
+        const welcomeMessageElement = document.getElementById('user-welcome-message');
+        if (welcomeMessageElement) {
+            welcomeMessageElement.textContent = `Welcome ${userName}! There are ${userCount} other user(s) currently shopping.`;
+        }
+    }
+});
+

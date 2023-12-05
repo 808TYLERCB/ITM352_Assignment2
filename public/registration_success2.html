@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .message-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            margin-top: 0;
+        }
+    </style>
+    <script>
+
+    setTimeout(function() {
+    window.location.href = '/index.html' + window.location.search; // Keeps the query string intact
+    }, 5000); // Redirects after 5 seconds
+
+    </script>
+</head>
+<body>
+    <div class="message-box">
+        <h1>Your Account Was Successfully Registered</h1>
+        <p>You will be redirected the homepage shortly.</p>
+    </div>
+</body>
+</html>

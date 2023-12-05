@@ -4,13 +4,13 @@
     "email": "itm352@hawaii.edu",
     "password": "0470fdfe7a3117757ed11de040af1d0a3c3ea39a9047913f38c295bb60728498da431499eb4be3177075fc8e5b33df0e821a2f5e74fc09c5d3fd98396e87eabf",
     "salt": "60258db2fa2f8dc174c240dac69b9b76",
-    "token": "7e33a22dfb36533207c4be6e810e8fbe4b8b0410"
+    "token": null
   },
   {
     "name": "Tyler",
-    "email": "tyler@tyler.com",
-    "password": "3c7eb61f2d675c656850ec52a0631e74dc426410fb086d8c08e7e169ec744e353d8b1ef5273611fc96c3b2d16c3070b7daaa93b7659ded947d3b80b5afe4106b",
-    "salt": "3bb08833c51a220832d411791af69cc1",
-    "token": "75499f047cfffa664f58504c84153b9811d10aca"
+    "email": "Tyler@tyler.com",
+    "password": "616e765d6b950ef0d8d97b0cd58b9481c967d14761b17d7452ae7801d158dee5dca6dad00b5951238265cc662ab3bd3a7d66b47bbcc32ffb0fca07e7db4c12a0",
+    "salt": "f9ac69d34aadf94fba4ca30b9e26f9af",
+    "token": null
   }
 ]

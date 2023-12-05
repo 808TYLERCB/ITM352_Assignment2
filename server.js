@@ -22,6 +22,9 @@ const validateToken = (req, res, next) => {
     }
 };
 
+// Global array to track logged-in users
+let loggedInUsers = [];
+
 // Protect the invoice route
 app.get('/invoice.html', validateToken, (req, res) => {
     // Serve the invoice page
@@ -96,11 +99,6 @@ const isEmailInUse = (email) => {
     return users.some(user => user.email.toLowerCase() === email.toLowerCase());
 };
 
-
-// Global array to track logged-in users
-let loggedInUsers = [];
-
-
 //Route for user login
 app.post('/login', (req, res) => {
     const { email, password, purchaseData } = req.body;
@@ -114,22 +112,27 @@ app.post('/login', (req, res) => {
         user.token = generateToken();
         saveUserData(users);
 
-        // Add the user's email to the logged-in users array if not already present
-        if (!loggedInUsers.includes(email)) {
-            loggedInUsers.push(email);
+        if (!loggedInUsers.includes(email.toLowerCase())) {
+            loggedInUsers.push(email.toLowerCase());
         }
 
-        // Redirect to invoice page with token, purchase data, and personalization info
+        // Prepare personalization info
         const personalizationInfo = {
             userName: user.name,
             userCount: loggedInUsers.length - 1 // Exclude the current user from the count
         };
 
-        // pass the personalization info as query parameters
-        res.redirect(`/invoice.html?token=${user.token}&purchaseData=${encodeURIComponent(purchaseData)}&userName=${encodeURIComponent(personalizationInfo.userName)}&userCount=${personalizationInfo.userCount}`);
+        // Redirect based on presence of purchase data
+        if (purchaseData) {
+            // Redirect to invoice page with token, purchase data, and personalization info
+            res.redirect(`/invoice.html?token=${user.token}&purchaseData=${encodeURIComponent(purchaseData)}&userName=${encodeURIComponent(personalizationInfo.userName)}&userCount=${personalizationInfo.userCount}`);
+        } else {
+            // Redirect to the index page with token, userName, and userCount
+            res.redirect(`/index.html?token=${user.token}&userName=${encodeURIComponent(personalizationInfo.userName)}&userCount=${personalizationInfo.userCount}`);
+        }
     } else {
         // Redirect back to login page with error message and sticky email field
-        res.redirect(`/login.html?error=${encodeURIComponent('*Invalid Email or Password. Please try again.')}&email=${encodeURIComponent(email)}&purchaseData=${encodeURIComponent(purchaseData)}`);
+        res.redirect(`/login.html?error=${encodeURIComponent('*Invalid Email or Password. Please try again.')}&email=${encodeURIComponent(email)}`);
     }
 });
 
@@ -207,12 +210,29 @@ app.post('/register', async (req, res) => {
         users.push(newUser);
         saveUserData(users);
 
-        // Redirect to the desired page with the token
-        res.redirect(`/registration_success.html?token=${token}&purchaseData=${encodeURIComponent(purchaseData)}`);
-    } else {
+        if (!loggedInUsers.includes(email.toLowerCase())) {
+            loggedInUsers.push(email.toLowerCase());
+        }
+
+         // Redirect to the invoice page with token, purchase data, and personalization info
+         const personalizationInfo = {
+            userName: name,
+            userCount: loggedInUsers.length - 1 // Exclude the current user from the count
+        };
+
+
+        // Redirect based on the presence of purchase data
+        if (purchaseData) {
+            // Redirect to success page with token, purchase data, and personalization info
+            res.redirect(`/registration_success.html?token=${newUser.token}&purchaseData=${encodeURIComponent(purchaseData)}&userName=${encodeURIComponent(personalizationInfo.userName)}&userCount=${personalizationInfo.userCount}`);
+        } else {
+            // Redirect to the index page with token, userName, and userCount
+            res.redirect(`/registration_success2.html?token=${newUser.token}&userName=${encodeURIComponent(personalizationInfo.userName)}&userCount=${personalizationInfo.userCount}`);
+        }
+        } else {
         // Redirect back with errors and sticky data (excluding passwords)
         res.redirect(`/register.html?errors=${encodeURIComponent(JSON.stringify(errors))}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&purchaseData=${encodeURIComponent(purchaseData)}`);
-    }
+        }
 });
 
 // Route for checking email uniqueness
@@ -225,44 +245,58 @@ app.get('/check-email', (req, res) => {
     }
 });
 
-// Process purchase
+
 app.post('/process-purchase', (req, res) => {
     let validationErrors = quantityValidation(req.body, products);
     
+    // Extract token, userName, and userCount from the request body
+    const { token, userName, userCount } = req.body;
+
     if (validationErrors.length > 0) {
-        // Redirect with error messages
-        res.redirect('/products_display.html?errors=' + encodeURIComponent(JSON.stringify(validationErrors)));
+        // Redirect with error messages, retaining token, userName, and userCount
+        res.redirect(`/products_display.html?errors=${encodeURIComponent(JSON.stringify(validationErrors))}` + 
+                     (token ? `&token=${token}` : '') + 
+                     (userName ? `&userName=${encodeURIComponent(userName)}` : '') + 
+                     (userCount !== undefined ? `&userCount=${userCount}` : ''));
     } else {
         // Create an array to hold the invoice items
         const invoiceItems = products.map(product => {
             const quantityKey = `quantity_${product.name.replace(/\s+/g, '_')}`;
             const quantity = parseInt(req.body[quantityKey], 10);
             if (quantity > 0) {
-                // Update available quantity
-                product.qty_available -= quantity;
-                // Update quantity sold
-                product.qty_sold += quantity;
-
-                // Return the item for the invoice
+                // Prepare the item for the invoice
                 return {
                     name: product.name,
                     quantity: quantity,
                     price: product.price,
                     extendedPrice: quantity * product.price,
-                    icon: product.image, // Use the image URL from the product JSON
-                    description: product.description // Use the description from the product JSON
+                    icon: product.image,
+                    description: product.description
                 };
             }
             return null;
-        }).filter(item => item != null); // Remove null entries where quantity was not greater than 0
+        }).filter(item => item != null);
 
-      
         // Encode the invoice items array as a JSON string
         const invoiceDataEncoded = encodeURIComponent(JSON.stringify(invoiceItems));
-        // Redirect to the login page with the purchase data as a query parameter
-        res.redirect(`/login.html?purchaseData=${invoiceDataEncoded}`);
+
+        // Find the email associated with the token
+        const users = getUserData();
+        const user = users.find(u => u.token === token);
+
+        // Check if the user's email is in the loggedInUsers array
+        if (user && loggedInUsers.includes(user.email.toLowerCase())) {
+            // Redirect to the invoice page with the purchase data, including token, userName, and userCount
+            res.redirect(`/invoice.html?token=${token}&purchaseData=${invoiceDataEncoded}&userName=${encodeURIComponent(userName)}&userCount=${userCount}`);
+        } else {
+            // If the user is not logged in or token is not valid, redirect to the login page with the purchase data
+            res.redirect(`/login.html?purchaseData=${invoiceDataEncoded}`);
+        }
     }
 });
+
+
+
 
 function quantityValidation(reqBody, products) {
     let errors = [];
@@ -301,6 +335,42 @@ function quantityValidation(reqBody, products) {
 
     return errors;
 }
+
+app.post('/confirm-purchase', (req, res) => {
+    const { token, purchaseData } = req.body; // Expecting token and purchaseData in the request body
+
+    // the token and find the user
+    const users = getUserData();
+    const user = users.find(user => user.token === token);
+
+    if (user) {
+        // Parse the purchaseData sent from the client
+        const invoiceItems = JSON.parse(purchaseData);
+
+        // Update the product inventory
+        invoiceItems.forEach(item => {
+            // Find the product in the inventory
+            const productIndex = products.findIndex(p => p.name === item.name);
+            if (productIndex !== -1) {
+                // Update available quantity and quantity sold
+                products[productIndex].qty_available -= item.quantity;
+                products[productIndex].qty_sold += item.quantity;
+            }
+        });
+
+        // Remove the user's token to log them out
+        user.token = null;
+        saveUserData(users);
+
+        // Remove user from logged-in users array
+        loggedInUsers = loggedInUsers.filter(email => email !== user.email);
+
+        // Respond to the client with a success message
+        res.json({ message: "Thank you for your purchase! You will be logged out and redirected to the home page." });
+    } else {
+        res.status(403).send('Access Denied');
+    }
+});
 
 
 // Serve static files from 'public' directory

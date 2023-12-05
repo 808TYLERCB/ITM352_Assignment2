@@ -72,3 +72,21 @@ populateStickyInputs();
         purchaseDataField.value = purchaseData;
     }
     
+
+    document.getElementById('show-password').addEventListener('change', function() {
+        const passwordInput = document.getElementById('password');
+        if (this.checked) {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    });
+    
+    document.getElementById('show-confirm-password').addEventListener('change', function() {
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        if (this.checked) {
+            confirmPasswordInput.type = 'text';
+        } else {
+            confirmPasswordInput.type = 'password';
+        }
+    });

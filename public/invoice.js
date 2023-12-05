@@ -66,3 +66,60 @@ function populateInvoice(invoiceItems) {
     document.getElementById('shipping-amount').textContent = `$${shipping.toFixed(2)}`;
     document.getElementById('total-amount').textContent = `$${totalAmount.toFixed(2)}`;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Your existing code to populate the invoice...
+});
+
+// Add event listener for the "Confirm Purchase" button
+document.getElementById('confirm-purchase').addEventListener('click', function() {
+    // Retrieve the token and purchaseData from the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const purchaseDataEncoded = urlParams.get('purchaseData');
+
+    // Send a POST request to the server to confirm the purchase
+    fetch('/confirm-purchase', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token: token,
+            purchaseData: purchaseDataEncoded // Send the encoded purchase data
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Show the thank-you message
+        document.getElementById('thank-you-message').textContent = data.message;
+        document.getElementById('thank-you-message').style.display = 'block';
+
+        // Redirect to the home page after 5 seconds
+        setTimeout(function() {
+            window.location.href = '/index.html';
+        }, 5000);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+// Add event listener for the "Continue Shopping" button
+document.getElementById('continue-shopping').addEventListener('click', function() {
+    window.location.href = '/products_display.html' + window.location.search;
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Retrieve the username and user count from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const userName = urlParams.get('userName');
+    const userCount = urlParams.get('userCount');
+
+    // Update the user welcome message
+    const welcomeMessageElement = document.getElementById('user-welcome-message');
+    if (welcomeMessageElement) {
+        welcomeMessageElement.textContent = `Welcome ${userName}! there are ${userCount} other user(s) currently shopping.`;
+    }
+});

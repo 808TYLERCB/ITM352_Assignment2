@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
     <title>Invoice</title>
-    
     <!-- Loading Product Data-->
     <script type="text/javascript" src="./products.js"></script>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <!-- Background -->
@@ -19,35 +15,18 @@ body {
     background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/background.jpeg') no-repeat center center fixed;
     background-size: cover;
 }
-
 </style>
 
 <body>
-<!-- NavBar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="index.html">
-            <img src="/images/logo.png" alt="Logo" class="logo">
-            Spam Mart
-        </a>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="products_display.html">Products</a>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link-divider">|</span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.html">Login</a>
-                </li>
-                <!-- Add more nav items here if needed -->
-            </ul>
-        </div>
-    </nav>
-
     <div class="container mt-5">
         <div class="row">
             <div class="col-12">
+                                <!-- Footer -->
+                                <footer class="footer">
+                                    <p id="user-welcome-message"></p> <!-- This will be filled by JavaScript -->
+                                    <p>&copy; 2023 Spam Mart LLC. All rights reserved.</p>
+                                </footer>
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -78,16 +57,25 @@ body {
                             <td id="total-amount">$0.00</td>
                         </tr>
                     </tfoot>
+                </table>
+                
+                <!-- Action buttons below the table -->
+                <div class="invoice-actions text-center">
+                    <button id="continue-shopping" class="btn btn-primary">Continue Shopping</button>
+                    <button id="confirm-purchase" class="btn btn-success">Confirm Purchase</button>
+                </div>
 
-                    <footer class="footer">
-                        <p>&copy; 2023 Spam Mart LLC. All rights reserved.</p>
-                    </footer>
+                <!-- Thank-you message placeholder -->
+                <div id="thank-you-message" style="display: none;">
+                    Thank you for your purchase! You will be logged out and redirected to the home page.
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./invoice.js"></script> <!-- Script to handle invoice data -->
 </body>
-
 </html>
